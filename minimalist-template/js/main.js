@@ -7,8 +7,10 @@
 
 // Initialize when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // @Fn/js/main#initThemeToggle
-    initThemeToggle();
+    // Only initialize theme toggle on settings page
+    if (window.location.pathname.endsWith('settings.html')) {
+        initThemeToggle();
+    }
     initNavigationHighlight();
 });
 
