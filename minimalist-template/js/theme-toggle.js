@@ -5,56 +5,41 @@
  * Only used on the homepage
  */
 
-// Initialize when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Only initialize theme toggle on the index page
-    const path = window.location.pathname;
-    if (path.endsWith('index.html') || path === '/minimalist-template/' || path === '/') {
-        initThemeToggle();
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    if (themeToggleBtn) {
+        updateToggleButtonText(themeToggleBtn);
+        themeToggleBtn.addEventListener('click', function() {
+            toggleTheme(themeToggleBtn);
+        });
     }
     // Always load theme preference for consistency across pages
     loadSavedTheme();
 });
 
 /**
- * Initialize theme toggle functionality with improved persistence
- * Switches between light and dark themes
- */
-function initThemeToggle() {
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    
-    if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', function() {
-            toggleTheme();
-        });
-    }
-    
-    // Load saved theme preference on page load
-    loadSavedTheme();
-}
-
-/**
  * Toggle between light and dark themes
- * Updates HTML attributes and localStorage
+ * @param {HTMLElement} button - The theme toggle button
  */
-function toggleTheme() {
-    const htmlElement = document.documentElement;
-    const currentTheme = htmlElement.getAttribute('data-bs-theme');
+function toggleTheme(button) {
+    const currentTheme = document.documentElement.getAttribute('data-bs-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    
-    // Use the setTheme function from main.js for consistency
     setTheme(newTheme);
-    
-    // Update button text
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    if (themeToggleBtn) {
-        themeToggleBtn.textContent = `Switch to ${newTheme === 'dark' ? 'Light' : 'Dark'} Theme`;
-    }
-    
+    updateToggleButtonText(button);
     // Dispatch event for components that might need to react to theme changes
     document.dispatchEvent(new CustomEvent('themeChanged', { 
         detail: { theme: newTheme } 
     }));
+}
+
+/**
+ * Update the toggle button text based on current theme
+ * @param {HTMLElement} button - The theme toggle button
+ */
+function updateToggleButtonText(button) {
+    const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+    button.textContent = `Switch to ${currentTheme === 'dark' ? 'Light' : 'Dark'} Theme`;
+    button.setAttribute('aria-label', `Switch to ${currentTheme === 'dark' ? 'light' : 'dark'} theme`);
 }
 
 /**
