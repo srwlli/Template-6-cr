@@ -20,28 +20,33 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 function initThemeToggle() {
     const themeToggleBtn = document.getElementById('theme-toggle');
-    
-    if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', function() {
-            const htmlElement = document.documentElement;
-            
-            if (htmlElement.getAttribute('data-bs-theme') === 'dark') {
-                htmlElement.setAttribute('data-bs-theme', 'light');
-                htmlElement.classList.add('light-theme');
-                localStorage.setItem('theme', 'light');
-            } else {
-                htmlElement.setAttribute('data-bs-theme', 'dark');
-                htmlElement.classList.remove('light-theme');
-                localStorage.setItem('theme', 'dark');
-            }
-        });
-    }
+    const htmlElement = document.documentElement;
     
     // Load saved theme preference
-    const savedTheme = localStorage.getItem('theme');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    htmlElement.setAttribute('data-bs-theme', savedTheme);
     if (savedTheme === 'light') {
-        document.documentElement.setAttribute('data-bs-theme', 'light');
-        document.documentElement.classList.add('light-theme');
+        htmlElement.classList.add('light-theme');
+    }
+    
+    if (themeToggleBtn) {
+        // Update button text based on current theme
+        themeToggleBtn.textContent = `Switch to ${savedTheme === 'dark' ? 'Light' : 'Dark'} Theme`;
+        
+        themeToggleBtn.addEventListener('click', function() {
+            const currentTheme = htmlElement.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            htmlElement.setAttribute('data-bs-theme', newTheme);
+            if (newTheme === 'light') {
+                htmlElement.classList.add('light-theme');
+            } else {
+                htmlElement.classList.remove('light-theme');
+            }
+            
+            localStorage.setItem('theme', newTheme);
+            themeToggleBtn.textContent = `Switch to ${newTheme === 'dark' ? 'Light' : 'Dark'} Theme`;
+        });
     }
 }
 
