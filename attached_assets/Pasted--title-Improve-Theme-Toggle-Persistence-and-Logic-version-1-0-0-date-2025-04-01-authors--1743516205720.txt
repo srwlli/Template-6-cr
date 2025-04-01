@@ -1,0 +1,89 @@
+---
+title: Improve Theme Toggle Persistence and Logic
+version: 1.0.0
+date: 2025-04-01
+authors:
+  - name: Coderef Agent
+tags: ["#theme", "#coderef2", "#fix", "#ui", "#js"]
+classification: INTERNAL
+description: Centralize theme state logic, fix theme toggle behavior, and enforce persistence across pages while restricting toggle display to index.html.
+---
+
+# Agent Execution – Theme Toggle Enhancement
+
+## Objective
+
+Improve the theme toggle functionality so that:
+- The theme state is globally persistent
+- The toggle logic is robust
+- The toggle remains visible **only on index.html**
+- All other pages respect the stored theme
+
+---
+
+## Required Actions
+
+1. **Update `@Js/main` (`js/main.js`)**
+   - Add functions to read and write theme to `localStorage`
+   - Apply theme to `<html data-theme="...">` on DOM load
+   - Observe system theme preference if no user override is stored
+
+2. **Refactor `@Js/theme-toggle` (`js/theme-toggle.js`)**
+   - Modify toggle event listener to update localStorage
+   - Immediately call main.js logic to re-apply theme
+   - Remove redundant theme detection
+
+3. **Ensure Styling Applies Across Pages**
+   - Ensure `theme.css` uses `[data-theme="dark"]` and `[data-theme="light"]` selectors properly on `html` element
+
+---
+
+## Constraints
+
+| Rule | Enforced |
+|------|----------|
+| Only modify `js/main.js` and `js/theme-toggle.js` | ✅ |
+| Do not move or replicate toggle button to other pages | ✅ |
+| No UI changes beyond theme logic | ✅ |
+| Must retain accessibility (e.g., aria-label on toggle) | ✅ |
+
+---
+
+## Linked Coderefs
+
+- `@Js/main` → `js/main.js`
+- `@Js/theme-toggle` → `js/theme-toggle.js`
+- `@Css/theme` → `css/theme.css`
+- `@Pg/root/index.html` → toggle appears only here
+
+---
+
+## Deliverables
+
+- Updated JS files with centralized theme handling
+- Verified working theme persistence across reloads/pages
+- No regressions on UI
+- Log changes in `./step-theme-fix-index.md`
+
+---
+
+[agent-directive]
+ref: @Task/theme-toggle-enhancement
+type: execution
+phase: 1
+step: step-theme-fix
+
+linked-docs:
+  - ./step-theme-fix-index.md
+
+instructions: |
+  1. In `@Js/main`, define theme detection and persistence logic:
+     - Check for `localStorage.theme`
+     - Fallback to system preference
+     - Set `html[data-theme]` accordingly on load
+  2. In `@Js/theme-toggle`, update the button logic to:
+     - Toggle between 'dark' and 'light'
+     - Write to `localStorage.theme`
+     - Immediately update `<html>` attribute
+  3. Do not add toggle to pages other than `@Pg/root/index.html`
+  4. Log updates in `step-theme-fix-index.md`
