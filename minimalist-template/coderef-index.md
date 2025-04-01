@@ -40,6 +40,12 @@ This document catalogs all CodeRef2 tags used throughout the minimalist template
 | `@Fn/js/main` | js/main.js | Main JavaScript entry point |
 | `@Fn/js/main#initThemeToggle` | js/main.js | Theme toggle initialization |
 
+## Components (`@C/`)
+
+| CodeRef | File | Description |
+|---------|------|-------------|
+| `@C/ui/ThemeToggle` | js/main.js, js/theme-toggle.js | Theme toggle component functionality |
+
 ## Relationships
 
 ### @Pg/root/HomePage

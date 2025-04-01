@@ -7,16 +7,20 @@
 
 // Initialize when DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Only initialize theme toggle on settings page
-    if (window.location.pathname.endsWith('settings.html')) {
+    // Only initialize theme toggle on the index page
+    const path = window.location.pathname;
+    if (path.endsWith('index.html') || path === '/minimalist-template/' || path === '/') {
         initThemeToggle();
     }
+    // Always load theme preference for consistency across pages
+    loadSavedTheme();
     initNavigationHighlight();
 });
 
 /**
  * Initialize theme toggle functionality
  * Switches between light and dark themes
+ * @C/ui/ThemeToggle
  */
 function initThemeToggle() {
     const themeToggleBtn = document.getElementById('theme-toggle');
@@ -37,15 +41,16 @@ function initThemeToggle() {
             const currentTheme = htmlElement.getAttribute('data-bs-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             
-            htmlElement.setAttribute('data-bs-theme', newTheme);
-            if (newTheme === 'light') {
-                htmlElement.classList.add('light-theme');
-            } else {
-                htmlElement.classList.remove('light-theme');
-            }
+            // Call setTheme helper to ensure consistent theme application
+            setTheme(newTheme);
             
-            localStorage.setItem('theme', newTheme);
+            // Update button text after theme change
             themeToggleBtn.textContent = `Switch to ${newTheme === 'dark' ? 'Light' : 'Dark'} Theme`;
+            
+            // Dispatch event for components that might need to react to theme changes
+            document.dispatchEvent(new CustomEvent('themeChanged', { 
+                detail: { theme: newTheme } 
+            }));
         });
     }
 }
@@ -66,6 +71,33 @@ function initNavigationHighlight() {
             }
         });
     }
+}
+
+/**
+ * Set the theme for the application
+ * @param {string} theme - Theme to set ('dark' or 'light')
+ */
+function setTheme(theme) {
+    const htmlElement = document.documentElement;
+    
+    htmlElement.setAttribute('data-bs-theme', theme);
+    if (theme === 'light') {
+        htmlElement.classList.add('light-theme');
+    } else {
+        htmlElement.classList.remove('light-theme');
+    }
+    
+    // Save preference
+    localStorage.setItem('theme', theme);
+}
+
+/**
+ * Load theme from localStorage on page load
+ * This ensures theme consistency across all pages
+ */
+function loadSavedTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
 }
 
 /**
