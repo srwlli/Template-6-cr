@@ -1,0 +1,50 @@
+/* @S/css/components */
+
+/* Navigation components */
+.nav-pills .nav-link {
+    margin-right: 5px;
+}
+
+/* Button components */
+.btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.25rem;
+    border-radius: 0.5rem;
+}
+
+/* Card components */
+.card {
+    margin-bottom: 1.5rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Alert components */
+.alert {
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+}
+
+/* Badge components */
+.badge {
+    padding: 0.5em 0.75em;
+    font-weight: 500;
+}
+
+/* Form components */
+.form-control {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}

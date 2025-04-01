@@ -1,0 +1,50 @@
+/* @S/css/themes */
+
+/* Theme variables */
+:root {
+    /* Default is dark theme */
+    --primary-bg: var(--bs-dark);
+    --secondary-bg: var(--bs-dark-bg-subtle);
+    --primary-text: var(--bs-light);
+    --secondary-text: var(--bs-light-text-emphasis);
+    --accent-color: var(--bs-primary);
+    --border-color: var(--bs-border-color);
+}
+
+/* Light theme overrides applied when .light-theme class is added to html element */
+html.light-theme {
+    --primary-bg: var(--bs-light);
+    --secondary-bg: var(--bs-light-bg-subtle);
+    --primary-text: var(--bs-dark);
+    --secondary-text: var(--bs-dark-text-emphasis);
+    --border-color: var(--bs-border-color-translucent);
+}
+
+/* Theme transition effects */
+body, .card, .btn, .nav-link, .form-control {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Custom theme colors that can be used for accents */
+.theme-accent-1 {
+    color: var(--bs-info);
+}
+
+.theme-accent-2 {
+    color: var(--bs-warning);
+}
+
+.theme-accent-3 {
+    color: var(--bs-success);
+}
+
+/* Custom background variations */
+.bg-theme-primary {
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+}
+
+.bg-theme-secondary {
+    background-color: var(--secondary-bg);
+    color: var(--secondary-text);
+}
