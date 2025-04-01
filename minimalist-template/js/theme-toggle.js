@@ -1,3 +1,4 @@
+
 // @C/ui/ThemeToggle
 
 /**
@@ -18,6 +19,26 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
+ * Set theme and persist it to localStorage
+ * @param {string} theme - Theme to set ('dark' or 'light')
+ */
+function setTheme(theme) {
+    const htmlElement = document.documentElement;
+    htmlElement.setAttribute('data-bs-theme', theme);
+    if (theme === 'light') {
+        htmlElement.classList.add('light-theme');
+    } else {
+        htmlElement.classList.remove('light-theme');
+    }
+    localStorage.setItem('theme', theme);
+    
+    // Dispatch event for components that might need to react to theme changes
+    document.dispatchEvent(new CustomEvent('themeChanged', { 
+        detail: { theme } 
+    }));
+}
+
+/**
  * Toggle between light and dark themes
  * @param {HTMLElement} button - The theme toggle button
  */
@@ -26,10 +47,6 @@ function toggleTheme(button) {
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
     updateToggleButtonText(button);
-    // Dispatch event for components that might need to react to theme changes
-    document.dispatchEvent(new CustomEvent('themeChanged', { 
-        detail: { theme: newTheme } 
-    }));
 }
 
 /**
@@ -46,19 +63,7 @@ function updateToggleButtonText(button) {
  * Load theme from localStorage on page load
  */
 function loadSavedTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    
-    // Use the setTheme function from main.js
-    if (typeof setTheme === 'function') {
-        setTheme(savedTheme);
-    } else {
-        // Fallback if main.js hasn't loaded yet
-        const htmlElement = document.documentElement;
-        htmlElement.setAttribute('data-bs-theme', savedTheme);
-        if (savedTheme === 'light') {
-            htmlElement.classList.add('light-theme');
-        } else {
-            htmlElement.classList.remove('light-theme');
-        }
-    }
+    const savedTheme = localStorage.getItem('theme');
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    setTheme(savedTheme || systemTheme);
 }
